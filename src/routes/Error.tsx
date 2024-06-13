@@ -1,8 +1,13 @@
 import { Link, useRouteError } from 'react-router-dom';
 
+type ErrorType = {
+  statusText?: string;
+  message?: string;
+}
+
 export default function Error() {
   const error = useRouteError();
-  console.error(error);
+  const { statusText, message } = error as ErrorType;
 
   return (
     <div
@@ -10,9 +15,9 @@ export default function Error() {
       id="error-page"
     >
       <h1 className="text-4xl underline">Oops!</h1>
-      <p className='text-xl'>Sorry, an unexpected error has occurred.</p>
-      <p className='text-xl'>
-        <i>{error.statusText || error.message}</i>
+      <p className="text-xl">Sorry, an unexpected error has occurred.</p>
+      <p className="text-xl">
+        <i>{statusText || message}</i>
       </p>
       <Link to="/">⬅ Home</Link>
     </div>
