@@ -56,7 +56,7 @@ const SubmitSnapsvisa = () => {
         <input
           type="submit"
           value="Submit snapsvisa"
-          className="self-end px-4 py-0.5 text-black bg-white border border-black rounded-lg shadow-lg w-fit"
+          className="self-end px-4 py-0.5 cursor-pointer text-black bg-white border border-black rounded-lg shadow-lg w-fit disabled:bg-black disabled:text-white"
         />
       </form>
     </>

@@ -1,50 +1,80 @@
-import { ReactNode } from 'react';
+import { ReactNode, useEffect, useState } from 'react';
 import CommonLink from '../../components/CommonLink';
+import { useFetchSnapsRatings } from '../../hooks/useFetchSnapsRatings';
+import { SnapsRatingTransformedData } from '../../types/SnapsRatings';
 
 const SnapsResults = () => {
-    /**
-     * TODO: Fetch the results from a DB and present them in the table
-     */
+  const snapsRatings = useFetchSnapsRatings();
+  const [data, setData] = useState<SnapsRatingTransformedData[]>([]);
+  useEffect(() => {
+    const newData: SnapsRatingTransformedData[] = [];
+    snapsRatings.forEach((rating) => {
+      // let smell: number, taste: number;
+      const votes = rating.ratings.length;
+      if (rating.ratings.length > 0) {
+        const smell =
+          rating.ratings.reduce((acc, curr) => acc + curr.smell, 0) ?? 0;
+        const taste =
+          rating.ratings.reduce((acc, curr) => acc + curr.taste, 0) ?? 0;
+
+        newData.push({
+          snaps: rating.snaps,
+          smell: smell / votes,
+          taste: taste / votes,
+          votes: votes
+        });
+      } else {
+        newData.push({
+          snaps: rating.snaps,
+          smell: 0,
+          taste: 0,
+          votes: 0
+        });
+      }
+      setData(newData);
+    });
+  }, [snapsRatings]);
+
   return (
     <div>
       <h2 className="my-2 text-4xl">Ratings</h2>
-      <CommonLink text='Vote' to='submit'/>
+      <CommonLink text="Vote" to="submit" />
       <table className="w-full text-sm text-black bg-white border border-collapse shadow-sm border-slate-400 dark:border-slate-500 dark:bg-slate-800 dark:text-white">
         <thead>
           <tr>
-            <th className="px-6 text-xl border border-slate-600">Snaps</th>
-            <th className="px-6 text-xl border border-slate-600">Smell</th>
-            <th className="px-6 text-xl border border-slate-600">Taste</th>
+            <THCell>Snaps</THCell>
+            <THCell>Smell</THCell>
+            <THCell>Taste</THCell>
+            <THCell># of votes</THCell>
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <TableDataCell>Bäska droppar</TableDataCell>
-            <TableDataCell>1</TableDataCell>
-            <TableDataCell>3</TableDataCell>
-          </tr>
-          <tr>
-            <TableDataCell>Gin</TableDataCell>
-            <TableDataCell>3</TableDataCell>
-            <TableDataCell>3</TableDataCell>
-          </tr>
-          <tr>
-            <TableDataCell>Tonic</TableDataCell>
-            <TableDataCell>4</TableDataCell>
-            <TableDataCell>5</TableDataCell>
-          </tr>
+          {data.map((rating, i) => {
+            return (
+              <tr key={i}>
+                <TDCell>{rating.snaps}</TDCell>
+                <TDCell>{rating.smell}</TDCell>
+                <TDCell>{rating.taste}</TDCell>
+                <TDCell>{rating.votes}</TDCell>
+              </tr>
+            );
+          })}
         </tbody>
       </table>
     </div>
   );
 };
 
-const TableDataCell = ({ children }: { children: ReactNode }) => {
+const TDCell = ({ children }: { children: ReactNode }) => {
   return (
-    <td className="px-2 py-1 text-lg text-center border border-slate-600">
+    <td className="px-2 py-1 text-lg text-center capitalize border border-slate-600">
       {children}
     </td>
   );
+};
+
+const THCell = ({ children }: { children: ReactNode }) => {
+  return <th className="px-6 text-xl border border-slate-600">{children}</th>;
 };
 
 export default SnapsResults;
