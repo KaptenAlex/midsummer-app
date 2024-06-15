@@ -16,23 +16,27 @@ const useHandleSubmit = ({
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    console.log('yolo', e);
+
     const form = document.querySelector(`#${formName}`) as HTMLFormElement;
     if (form) {
       const formData = new FormData(form);
       let body = {};
       for (const input of formData) {
-        console.log(input[0], input[1])
         body = { ...body, [input[0]]: input[1] };
       }
-      console.log(body);
-      console.log(url)
-      navigate('..');
-      /* TODO: Create endpoint with lambda or something that takes this request
-            stores it in a db and then reroutes the user to the snaps visa page
-            also check if the submit is successful, if it isn't stay on this page
-            if it succeeds, reroute tot snapsvisa page.
-          */
+
+      const res = await fetch(url, {
+        method: 'POST',
+        body: JSON.stringify(body)
+      });
+
+
+      if (res.ok) {
+        navigate('..');
+      } else {
+        // TODO: Error message in UI
+        console.error('Something went wrong while submitting data');
+      }
     }
   }
 

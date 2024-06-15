@@ -6,19 +6,19 @@ const Footer = () => {
 
   return (
     <footer className="absolute bottom-0 grid items-center justify-between w-full grid-cols-4">
-      <FooterLink text="Home" isActive={location.pathname === '/'} to="/" />
+      <FooterLink text="🏡" isActive={location.pathname === '/'} to="/" />
       <FooterLink
-        text="Snaps songs"
+        text="🥃🎶"
         isActive={location.pathname.includes('/snaps-visor')}
         to="snaps-visor"
       />
       <FooterLink
-        text="Rate the snaps"
+        text="🥃👩‍💼"
         isActive={location.pathname.includes('/snaps-rating')}
         to="snaps-rating"
       />
       <FooterLink
-        text="Drunkard vote"
+        text="🥃🥴"
         isActive={location.pathname === '/drunk-scoreboard'}
         to="drunk-scoreboard"
       />
@@ -37,7 +37,7 @@ const FooterLink = memo(function FooterLink({
 }) {
   return (
     <Link
-      className={`flex justify-center w-full h-full p-4 text-center align-middle border-white align-center border-right
+      className={`flex justify-center w-full h-full p-4 text-center border-white border-right items-center
       ${isActive ? 'bg-gray-300 text-black' : 'text-white bg-black'}`}
       to={to}
     >
