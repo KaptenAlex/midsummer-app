@@ -12,3 +12,10 @@
   height: 100%;
   width: 100%;
 }
+
+
+@layer components {
+  .btn-primary {
+    @apply text-lg text-yellow-500 bg-blue-900 border-2 border-yellow-500 rounded-lg text-nowrap
+  }
+}

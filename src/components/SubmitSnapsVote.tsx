@@ -105,7 +105,7 @@ const SubmitSnapsVote = () => {
           disabled={isPending}
           type="submit"
           value={isPending ? 'Submitting' : 'Submit vote'}
-          className="self-end px-4 py-0.5 cursor-pointer text-black bg-white border border-black rounded-lg shadow-lg w-fit disabled:bg-black disabled:text-white"
+          className="btn-primary"
         />
       </form>
     </div>

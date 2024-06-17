@@ -79,10 +79,14 @@ const SnapsvisorViewer = () => {
     return (
       <div className="relative h-dvh">
         {/* Snapsvisa */}
-        <div className="flex flex-col max-w-lg text-center gap-y-4">
-          <h1 className="mt-2 text-3xl">{snapsvisor[state.page]?.title}</h1>
-          <h2 className="text-2xl">Melody: {snapsvisor[state.page]?.melody}</h2>
-          <div>
+        <div className="flex flex-col max-w-lg text-center">
+          <h1 className="mt-2 text-3xl text-blue-900">
+            {snapsvisor[state.page]?.title}
+          </h1>
+          <h2 className="text-2xl text-blue-900">
+            Melody: {snapsvisor[state.page]?.melody}
+          </h2>
+          <div className="pt-4">
             <Lyrics lyrics={snapsvisor[state.page]?.lyrics} />
           </div>
         </div>
@@ -138,12 +142,12 @@ const Lyrics = ({ lyrics }: { lyrics: string | string[] }) => {
           : 'text-white'
       }
       */
-      <div className="">
+      <div>
         {lyrics.map((lyric, i) => {
           return (
             <p
               key={i}
-              className={`text-lg text-white  ${
+              className={`text-xl text-black  ${
                 i == containsRefräng && 'mt-4 underline'
               }`}
             >
