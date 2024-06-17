@@ -8,7 +8,6 @@ import SnapsvisorViewer from './routes/Snapsvisor/SnapsvisorViewer';
 import SubmitSnapsvisa from './routes/Snapsvisor/SubmitSnapsvisa';
 import Snapsvisor from './routes/Snapsvisor/Snapsvisor';
 import SnapsResults from './routes/SnapsRating/SnapsResults';
-import SubmitSnapsVote from './routes/SnapsRating/SubmitSnapsVote';
 
 /**
  * App should do four things
@@ -24,7 +23,6 @@ const App = () => {
           <Route index element={<Home />} />
           <Route path="drunk-scoreboard" element={<DrunkScoreboard />} />
           <Route path="snaps-rating" element={<SnapsRating />}>
-            <Route path="submit" element={<SubmitSnapsVote />} />
             <Route index element={<SnapsResults />} />
           </Route>
           <Route path="snaps-visor" element={<Snapsvisor />}>

@@ -5,7 +5,11 @@ const SubmitSnapsvisa = () => {
   const tableName = import.meta.env.VITE_SNAPSVISOR_TABLE_NAME ?? '';
   const url = `https://ct46vi4u27mqybegdkh2dtxrre0amrcm.lambda-url.eu-north-1.on.aws?TableName=${tableName}`;
 
-  const handleSubmit = useHandleSubmit({ formName: 'snapsvisa', url });
+  const handleSubmit = useHandleSubmit({
+    formName: 'snapsvisa',
+    url,
+    method: 'POST'
+  });
 
   return (
     <>

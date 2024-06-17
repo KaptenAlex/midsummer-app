@@ -7,10 +7,14 @@ import { useNavigate } from 'react-router-dom';
  */
 const useHandleSubmit = ({
   formName,
-  url
+  url,
+  method,
+  noRedirect
 }: {
   formName: string;
   url: string;
+  method: 'POST' | 'PUT';
+  noRedirect?: boolean;
 }) => {
   const navigate = useNavigate();
 
@@ -26,14 +30,16 @@ const useHandleSubmit = ({
       }
 
       const res = await fetch(url, {
-        method: 'POST',
+        method,
         body: JSON.stringify(body)
       });
 
-
-      if (res.ok) {
+      if (res.ok && !noRedirect) {
         navigate('..');
-      } else {
+        // TODO: Success message in UI
+        console.log('Submitted');
+      }
+      if (!res.ok) {
         // TODO: Error message in UI
         console.error('Something went wrong while submitting data');
       }

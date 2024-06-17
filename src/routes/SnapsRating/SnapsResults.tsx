@@ -1,12 +1,12 @@
-import { ReactNode, useEffect, useState } from 'react';
-import CommonLink from '../../components/CommonLink';
+import { ReactNode, useCallback, useEffect, useState } from 'react';
+import SubmitSnapsVote from '../../components/SubmitSnapsVote';
 import { useFetchSnapsRatings } from '../../hooks/useFetchSnapsRatings';
 import { SnapsRatingTransformedData } from '../../types/SnapsRatings';
 
 const SnapsResults = () => {
   const snapsRatings = useFetchSnapsRatings();
   const [data, setData] = useState<SnapsRatingTransformedData[]>([]);
-  useEffect(() => {
+  const fetchSnapsRatings = useCallback(async () => {
     const newData: SnapsRatingTransformedData[] = [];
     snapsRatings.forEach((rating) => {
       // let smell: number, taste: number;
@@ -35,10 +35,14 @@ const SnapsResults = () => {
     });
   }, [snapsRatings]);
 
+  useEffect(() => {
+    async () => await fetchSnapsRatings();
+  }, [fetchSnapsRatings]);
+
   return (
     <div>
+      <SubmitSnapsVote fetchData={fetchSnapsRatings} />
       <h2 className="my-2 text-4xl">Ratings</h2>
-      <CommonLink text="Vote" to="submit" />
       <table className="w-full text-sm text-black bg-white border border-collapse shadow-sm border-slate-400 dark:border-slate-500 dark:bg-slate-800 dark:text-white">
         <thead>
           <tr>

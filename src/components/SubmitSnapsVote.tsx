@@ -1,62 +1,60 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import CommonLink from '../../components/CommonLink';
-import { useFetchSnapsRatings } from '../../hooks/useFetchSnapsRatings';
+import { useCallback, useState } from 'react';
+import { useFetchSnapsRatings } from '../hooks/useFetchSnapsRatings';
 
-const SubmitSnapsVote = () => {
-  const navigate = useNavigate();
-
-  /**
-   * TODO: Fetch from Db what snaps there are.
-   * TODO: Submit the form and reroute the user back to the results page if the submit goes well.
-   * otherwise display error and stay on this route
-   */
-
-  const snapsRatings = useFetchSnapsRatings();
+const SubmitSnapsVote = ({ fetchData }: { fetchData: () => Promise<void> }) => {
   const tableName = import.meta.env.VITE_SNAPSRATING_TABLE_NAME ?? '';
+  const [isPending, setIsPending] = useState(false);
+  const snapsRatings = useFetchSnapsRatings();
 
-  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-
-    const form = document.querySelector('#snapsForm') as HTMLFormElement;
-    if (form) {
-      const formData = new FormData(form);
-      let body = {};
-      for (const input of formData) {
-        body = { ...body, [input[0]]: input[1] };
-      }
-
-      const res = await fetch(
-        `https://xmvp7o6kgi4m2q5q7ac6h3k5ka0nqumq.lambda-url.eu-north-1.on.aws?TableName=${tableName}`,
-        {
-          method: 'PUT',
-          body: JSON.stringify(body)
+  const handleSubmit = useCallback(
+    async (e: React.FormEvent<HTMLFormElement>) => {
+      e.preventDefault();
+      setIsPending(true);
+      const form = document.querySelector('#snapsForm') as HTMLFormElement;
+      if (form) {
+        const formData = new FormData(form);
+        let body = {};
+        for (const input of formData) {
+          body = { ...body, [input[0]]: input[1] };
         }
-      );
 
-      if (res.ok) {
-        navigate('..');
-      } else {
-        // TODO: Error message in UI
-        console.error('Something went wrong while submitting data');
+        const res = await fetch(
+          `https://xmvp7o6kgi4m2q5q7ac6h3k5ka0nqumq.lambda-url.eu-north-1.on.aws?TableName=${tableName}`,
+          {
+            method: 'PUT',
+            body: JSON.stringify(body)
+          }
+        );
+
+        if (res.ok) {
+          // TODO: Error message in UI
+          console.log('Submitted');
+        } else {
+          // TODO: Error message in UI
+          console.error('Something went wrong while submitting data');
+        }
+        setIsPending(false);
       }
-    }
-  }
+    },
+    [tableName]
+  );
 
   const [smell, setSmell] = useState('1');
   const [taste, setTaste] = useState('1');
 
   return (
     <div>
-      <h1>Rate the snaps!</h1>
-      <CommonLink text="See the results" to=".." />
+      <h1 className="my-2 text-4xl">Rate the snaps!</h1>
       <form
         id="snapsForm"
         className="flex flex-col gap-4"
-        onSubmit={handleSubmit}
+        onSubmit={async (e) => {
+          await handleSubmit(e);
+          await fetchData();
+        }}
       >
         <fieldset>
-          <legend>Snaps</legend>
+          <legend className="text-2xl">Snaps</legend>
           <select
             required
             disabled={!snapsRatings || snapsRatings.length == 0}
@@ -75,7 +73,7 @@ const SubmitSnapsVote = () => {
           </select>
         </fieldset>
         <fieldset>
-          <legend>Smell</legend>
+          <legend className="mb-2 text-2xl">Smell</legend>
           <input
             min={1}
             max={10}
@@ -89,7 +87,7 @@ const SubmitSnapsVote = () => {
           <p>{smell}</p>
         </fieldset>
         <fieldset>
-          <legend>Taste</legend>
+          <legend className="mb-2 text-2xl">Taste</legend>
           <input
             min={1}
             max={10}
@@ -103,8 +101,9 @@ const SubmitSnapsVote = () => {
           <p>{taste}</p>
         </fieldset>
         <input
+          disabled={isPending}
           type="submit"
-          value="Submit vote"
+          value={isPending ? 'Submitting' : 'Submit vote'}
           className="self-end px-4 py-0.5 cursor-pointer text-black bg-white border border-black rounded-lg shadow-lg w-fit disabled:bg-black disabled:text-white"
         />
       </form>
