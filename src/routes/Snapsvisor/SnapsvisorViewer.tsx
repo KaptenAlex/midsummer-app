@@ -24,11 +24,13 @@ function reducer(
 
 const SnapsvisorViewer = () => {
   const [snapsvisor, setSnapsvisor] = useState<Snapsvisor[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const [state, dispatch] = useReducer(reducer, { page: 0, pages: 0 });
 
   useEffect(() => {
     async function fetchSnapsvisor() {
+      setIsLoading(true);
       const tableName = import.meta.env.VITE_SNAPSVISOR_TABLE_NAME ?? '';
       const url = `https://ct46vi4u27mqybegdkh2dtxrre0amrcm.lambda-url.eu-north-1.on.aws?TableName=${tableName}`;
       const res = await fetch(url, { method: 'GET' });
@@ -49,54 +51,71 @@ const SnapsvisorViewer = () => {
 
         if (transformedData.length > 0) {
           setSnapsvisor(transformedData);
-          state.pages = transformedData?.length - 1 ?? 0;
+          state.pages = transformedData?.length - 1;
         }
+        setIsLoading(false);
       } else {
         // TODO: Error message in UI
+        setIsLoading(false);
         console.error('Something went wrong while fetching snapsvisor');
       }
     }
     fetchSnapsvisor();
   }, []);
 
+  if (snapsvisor.length == 0) {
+    return null;
+  }
+
+  if (isLoading) {
+    return (
+      <div>
+        <p>Loading...</p>
+      </div>
+    );
+  }
+
   if (snapsvisor.length > 0) {
     return (
-      <>
+      <div className="relative h-dvh">
+        {/* Snapsvisa */}
         <div className="flex flex-col max-w-lg text-center gap-y-4">
-          <CommonLink text="Submit a snapsvisa" to="submit" />
-          {/* Snapsvisa namn */}
-          <h1 className="text-4xl">Title: {snapsvisor[state.page]?.title}</h1>
-          <h2 className="text-3xl">Melody: {snapsvisor[state.page]?.melody}</h2>
-          {/* Snapsvisa */}
-          <h3 className="text-2xl">Lyrics: </h3>
+          <h1 className="mt-2 text-3xl">{snapsvisor[state.page]?.title}</h1>
+          <h2 className="text-2xl">Melody: {snapsvisor[state.page]?.melody}</h2>
           <div>
             <Lyrics lyrics={snapsvisor[state.page]?.lyrics} />
           </div>
         </div>
         {/* Navigator */}
-        <div className="flex justify-center gap-4 mt-8">
-          <button
-            disabled={state.page === 0}
-            onClick={() => {
-              dispatch({ type: 'previous' });
-            }}
-            className="px-4 py-2 text-black bg-white rounded-md shadow-lg disabled:bg-gray-600 disabled:"
-          >
-            {'<'}
-          </button>
-          <p className="text-4xl text-center">{state.page + 1}</p>
-          <button
-            disabled={snapsvisor?.length - 1 <= state.page}
-            onClick={() => dispatch({ type: 'next' })}
-            className="px-4 py-2 text-black bg-white rounded-md shadow-lg disabled:bg-gray-600 disabled:"
-          >
-            {'>'}
-          </button>
+        <div className="absolute w-full bottom-20">
+          <div className="flex justify-center w-full gap-4 mb-6">
+            <button
+              disabled={!state.page}
+              onClick={() => {
+                dispatch({ type: 'previous' });
+              }}
+              className="px-4 py-2 text-lg text-yellow-500 bg-blue-900 border-2 border-yellow-500 rounded-md shadow-lg disabled:bg-gray-600"
+            >
+              {'<'}
+            </button>
+            <p className="text-4xl text-center text-yellow-500 w-11">
+              {state.page + 1}
+            </p>
+            <button
+              disabled={snapsvisor?.length - 1 <= state.page}
+              onClick={() => dispatch({ type: 'next' })}
+              className="px-4 py-2 text-lg text-yellow-500 bg-blue-900 border-2 border-yellow-500 rounded-md shadow-lg disabled:bg-gray-600"
+            >
+              {'>'}
+            </button>
+          </div>
+          <div className="flex justify-center w-full">
+            <CommonLink text="Submit a snapsvisa" to="submit" />
+          </div>
         </div>
-      </>
+      </div>
     );
   }
-  return null;
 };
 
 const Lyrics = ({ lyrics }: { lyrics: string | string[] }) => {
@@ -112,23 +131,28 @@ const Lyrics = ({ lyrics }: { lyrics: string | string[] }) => {
     );
 
     return (
-      <>
+      /*
+      ${
+        containsRefräng !== -1 && i >= containsRefräng
+          ? 'text-orange-400 '
+          : 'text-white'
+      }
+      */
+      <div className="">
         {lyrics.map((lyric, i) => {
           return (
             <p
               key={i}
-              className={`${
-                containsRefräng !== -1 && i >= containsRefräng
-                  ? 'text-orange-400 text-2xl'
-                  : 'text-xl text-white'
-              } ${i == containsRefräng && 'mt-4 underline'}`}
+              className={`text-lg text-white  ${
+                i == containsRefräng && 'mt-4 underline'
+              }`}
             >
               {lyric}
             </p>
           );
         })}
         <br />
-      </>
+      </div>
     );
   }
 };

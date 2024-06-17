@@ -38,7 +38,7 @@ const FooterLink = memo(function FooterLink({
   return (
     <Link
       className={`flex justify-center w-full h-full p-4 text-center border-white border-right items-center
-      ${isActive ? 'bg-gray-300 text-black' : 'text-white bg-black'}`}
+      ${isActive ? 'bg-yellow-500 ' : 'bg-blue-900'}`}
       to={to}
     >
       {text}

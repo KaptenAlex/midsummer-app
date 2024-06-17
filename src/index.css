@@ -6,5 +6,9 @@
   font-size: 16px;
   --tw-bg-opacity: 1;
   background-color: rgb(107 114 128 / var(--tw-bg-opacity));
+  /* background-color: rgb(107 114 128 / var(--tw-bg-opacity)); */
+  background: linear-gradient(rgb(236, 179, 8), rgb(30, 59, 138));
   color: white;
+  height: 100%;
+  width: 100%;
 }
