@@ -20,7 +20,7 @@ export const useFetchSnapsRatings = () => {
       if (res.ok && data?.Items && data.Items.length > 0) {
         const ratings: SnapsRatingResponse[] = data?.Items;
         const newData: SnapsRatingTransformedData[] = [];
-        console.log(snapsRatings, 'snapsRatings');
+
         ratings.forEach((snaps) => {
           const votes = snaps.ratings.length;
           if (snaps.ratings.length > 0) {
