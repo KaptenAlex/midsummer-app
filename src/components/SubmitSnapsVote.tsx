@@ -1,10 +1,12 @@
 import { useCallback, useState } from 'react';
 import { useFetchSnapsRatings } from '../hooks/useFetchSnapsRatings';
+import { useNavigate } from 'react-router-dom';
 
-const SubmitSnapsVote = ({ fetchData }: { fetchData: () => Promise<void> }) => {
+const SubmitSnapsVote = () => {
   const tableName = import.meta.env.VITE_SNAPSRATING_TABLE_NAME ?? '';
   const [isPending, setIsPending] = useState(false);
   const snapsRatings = useFetchSnapsRatings();
+  const navigate = useNavigate();
 
   const handleSubmit = useCallback(
     async (e: React.FormEvent<HTMLFormElement>) => {
@@ -29,6 +31,8 @@ const SubmitSnapsVote = ({ fetchData }: { fetchData: () => Promise<void> }) => {
         if (res.ok) {
           // TODO: Error message in UI
           console.log('Submitted');
+          navigate(0)
+
         } else {
           // TODO: Error message in UI
           console.error('Something went wrong while submitting data');
@@ -36,7 +40,7 @@ const SubmitSnapsVote = ({ fetchData }: { fetchData: () => Promise<void> }) => {
         setIsPending(false);
       }
     },
-    [tableName]
+    [navigate, tableName]
   );
 
   const [smell, setSmell] = useState('1');
@@ -48,10 +52,7 @@ const SubmitSnapsVote = ({ fetchData }: { fetchData: () => Promise<void> }) => {
       <form
         id="snapsForm"
         className="flex flex-col gap-4"
-        onSubmit={async (e) => {
-          await handleSubmit(e);
-          await fetchData();
-        }}
+        onSubmit={handleSubmit}
       >
         <fieldset>
           <legend className="text-2xl">Snaps</legend>
