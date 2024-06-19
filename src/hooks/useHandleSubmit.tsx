@@ -1,4 +1,3 @@
-import { useNavigate } from 'react-router-dom';
 
 /**
  * A hook that iterates through the given form,
@@ -8,16 +7,12 @@ import { useNavigate } from 'react-router-dom';
 const useHandleSubmit = ({
   formName,
   url,
-  method,
-  noRedirect
+  method
 }: {
   formName: string;
   url: string;
   method: 'POST' | 'PUT';
-  noRedirect?: boolean;
 }) => {
-  const navigate = useNavigate();
-
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
@@ -34,16 +29,9 @@ const useHandleSubmit = ({
         body: JSON.stringify(body)
       });
 
-      if (res.ok && !noRedirect) {
-        navigate('..');
-        // TODO: Success message in UI
-        console.log('Submitted');
-      }
-      if (!res.ok) {
-        // TODO: Error message in UI
-        console.error('Something went wrong while submitting data');
-      }
+      return res.ok;
     }
+    return false;
   }
 
   return handleSubmit;

@@ -86,7 +86,7 @@ const SnapsvisorViewer = () => {
           <h2 className="text-2xl text-blue-900">
             Melody: {snapsvisor[state.page]?.melody}
           </h2>
-          <div className="pt-4">
+          <div className="pt-4 max-h-[550px] lg:max-h-full overflow-y-scroll lg:overflow-y-hidden">
             <Lyrics lyrics={snapsvisor[state.page]?.lyrics} />
           </div>
         </div>

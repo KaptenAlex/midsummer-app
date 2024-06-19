@@ -4,7 +4,7 @@ import { Outlet } from 'react-router-dom';
 const Layout = () => {
   return (
     <div className="relative">
-      <main className="flex items-center justify-center h-screen max-w-lg px-4">
+      <main className="flex items-center justify-center h-screen max-w-lg px-4 lg:max-w-full">
         <Outlet />
       </main>
       <Footer />
