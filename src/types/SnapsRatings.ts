@@ -5,8 +5,8 @@ export type SnapsRatingResponse = {
 
 export type SnapsRatingTransformedData = {
   snaps: string;
-  smell: number;
-  taste: number;
+  smell: number | string;
+  taste: number | string;
   votes: number;
 }
 

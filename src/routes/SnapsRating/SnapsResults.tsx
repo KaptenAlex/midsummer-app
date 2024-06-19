@@ -6,10 +6,10 @@ const SnapsResults = () => {
   const snapsRatings = useFetchSnapsRatings();
 
   return (
-    <div>
+    <div className='h-full'>
       <SubmitSnapsVote />
-      <h2 className="my-2 text-4xl">Ratings</h2>
-      <table className="w-full text-sm text-black bg-white border border-collapse shadow-sm border-slate-400 dark:border-slate-500 dark:bg-slate-800 dark:text-white">
+      <h2 className="my-2 text-4xl text-blue-900">Ratings</h2>
+      <table className="w-full text-sm text-yellow-500 bg-blue-900 border-2 border-collapse border-yellow-500 shadow-sm">
         <thead>
           <tr>
             <THCell>Snaps</THCell>
@@ -35,14 +35,14 @@ const SnapsResults = () => {
 
 const TDCell = ({ children }: { children: ReactNode }) => {
   return (
-    <td className="px-2 py-1 text-lg text-center capitalize border border-slate-600">
+    <td className="py-1 text-lg text-center capitalize border border-yellow-500">
       {children}
     </td>
   );
 };
 
 const THCell = ({ children }: { children: ReactNode }) => {
-  return <th className="px-6 text-xl border border-slate-600">{children}</th>;
+  return <th className="px-3 text-xl border border-yellow-500">{children}</th>;
 };
 
 export default SnapsResults;

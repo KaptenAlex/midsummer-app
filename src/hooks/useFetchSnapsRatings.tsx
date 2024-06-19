@@ -20,7 +20,7 @@ export const useFetchSnapsRatings = () => {
       if (res.ok && data?.Items && data.Items.length > 0) {
         const ratings: SnapsRatingResponse[] = data?.Items;
         const newData: SnapsRatingTransformedData[] = [];
-        console.log(snapsRatings, 'snapsRatings');
+
         ratings.forEach((snaps) => {
           const votes = snaps.ratings.length;
           if (snaps.ratings.length > 0) {
@@ -29,10 +29,12 @@ export const useFetchSnapsRatings = () => {
             const taste =
               snaps.ratings.reduce((acc, curr) => acc + curr.taste, 0) ?? 0;
 
+              const smellResult = (smell / votes).toString();
+              const tasteResult = (taste / votes).toString();
             newData.push({
               snaps: snaps.snaps,
-              smell: smell / votes,
-              taste: taste / votes,
+              smell:  parseFloat(smellResult).toFixed(smellResult.includes('.') ? 1 : 0),
+              taste:  parseFloat(tasteResult).toFixed(tasteResult.includes('.') ? 1 : 0),
               votes: votes
             });
           } else {
