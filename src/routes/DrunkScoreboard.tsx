@@ -30,9 +30,9 @@ const DrunkScoreboard = () => {
 
   const [drunkards, setDrunkards] = useState<Drunkard[]>([]);
   const [showSnackbar, setShowSnackbar] = useState(false);
-  // const [showDrunkards, setShowDrunkards] = useState(false);
 
   const [isSuccess, setIsSuccess] = useState(false);
+  const [showResults, setShowResults] = useState(false);
   const [snackBarText, setSnackBarText] = useState("");
   const navigate = useNavigate();
 
@@ -67,35 +67,26 @@ const DrunkScoreboard = () => {
   }, [tableName]);
 
   useEffect(() => {
-    async function test() {
-      await fetchDrunkards();
+    // Create Date objects
+    const now = new Date().getTime();
+    const target = new Date('2024-06-21T20:00').getTime();
+
+    // Compare dates
+    if (now > target) {
+      setShowResults(true);
+    } else if (now < target) {
+      setShowResults(false)
+    } else {
+      setShowResults(true);
     }
-    test();
-  }, [fetchDrunkards]);
 
-  // useEffect(() => {
-  //   // Create Date objects
-  //   const d1 = new Date('2023-06-19');
-  //   const d2 = new Date('2023-06-19');
-
-  //   // Format dates in Swedish locale
-  //   const swedishFormatter = new Intl.DateTimeFormat('sv-SE', { year: 'numeric', month: '2-digit', day: '2-digit' });
-
-  //   const formattedDate1 = swedishFormatter.format(d1);
-  //   const formattedDate2 = swedishFormatter.format(d2);
-
-  //   console.log(`Date 1 (formatted): ${formattedDate1}`);
-  //   console.log(`Date 2 (formatted): ${formattedDate2}`);
-
-  //   // Compare dates
-  //   if (d1 > d2) {
-  //     console.log("Date 1 is after Date 2");
-  //   } else if (d1 < d2) {
-  //     console.log("Date 1 is before Date 2");
-  //   } else {
-  //     console.log("Date 1 is the same as Date 2");
-  //   }
-  // }, [])
+    async function fetchResults() {
+      if (showResults) {
+        await fetchDrunkards();
+      }
+    }
+    fetchResults();
+  }, [fetchDrunkards, showResults]);
 
 
   return (
@@ -151,16 +142,7 @@ const DrunkScoreboard = () => {
             className="p-2 btn-primary"
           />
         </form>
-        <p className="text-2xl text-blue-900 underline">Note:</p>
-        <p className="text-lg text-blue-900">Results will be unlocked on 10 AM of Midsummer's eve</p>
-        <ul className='overflow-y-auto max-h-96'>
-          {drunkards.map((drunkard) => (
-            <li key={drunkard.person} className="text-4xl text-yellow-500 capitalize">
-              {drunkard.person}: {drunkard.votes}
-            </li>
-          ))}
-        </ul>
-        {/* {showDrunkards ? (
+        {showResults ? (
           <ul>
             {drunkards.map((drunkard) => (
               <li key={drunkard.person} className="overflow-y-auto text-2xl text-yellow-500 capitalize">
@@ -171,9 +153,9 @@ const DrunkScoreboard = () => {
         ) : (
           <>
             <p className="text-2xl text-blue-900 underline">Note:</p>
-            <p className="text-lg text-blue-900">Results will be unlocked on 10 AM of Midsummer's eve</p>
+            <p className="text-lg text-blue-900">Results will be unlocked 8 AM of Midsummer's eve</p>
           </>
-        )} */}
+        )}
       </div>
     </div>
   );
