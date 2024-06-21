@@ -142,7 +142,7 @@ const Lyrics = ({ lyrics }: { lyrics: string | string[] }) => {
           : 'text-white'
       }
       */
-      <div>
+      <div className='overflow-y-scroll max-h-[350px]'>
         {lyrics.map((lyric, i) => {
           return (
             <p

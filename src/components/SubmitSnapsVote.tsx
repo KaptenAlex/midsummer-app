@@ -62,7 +62,7 @@ const SubmitSnapsVote = () => {
       if (res.ok) {
         setSnackbar(true);
         setTimeout(() => {
-          navigate(0)
+          navigate('results')
         }, 2500);
       } else {
         setSnackbar(true);
@@ -104,7 +104,7 @@ const SubmitSnapsVote = () => {
               validateForm();
             }}
           >
-            <option value="bg-blue-900 text-yellow-500 capitalize">Select a snaps...</option>
+            <option value="bg-blue-900 text-yellow-500">Select a snaps...</option>
             {snapsRatings.map((rating) => (
               <option
                 className="text-yellow-500 capitalize bg-blue-900"

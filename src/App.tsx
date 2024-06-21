@@ -8,6 +8,7 @@ import SnapsvisorViewer from './routes/Snapsvisor/SnapsvisorViewer';
 import SubmitSnapsvisa from './routes/Snapsvisor/SubmitSnapsvisa';
 import Snapsvisor from './routes/Snapsvisor/Snapsvisor';
 import SnapsResults from './routes/SnapsRating/SnapsResults';
+import { SnapsTable } from './routes/SnapsRating/SnapsTable';
 
 /**
  * App should do four things
@@ -24,6 +25,7 @@ const App = () => {
           <Route path="drunk-scoreboard" element={<DrunkScoreboard />} />
           <Route path="snaps-rating" element={<SnapsRating />}>
             <Route index element={<SnapsResults />} />
+            <Route path="results" element={<SnapsTable />} />
           </Route>
           <Route path="snaps-visor" element={<Snapsvisor />}>
             <Route path="submit" element={<SubmitSnapsvisa />} />

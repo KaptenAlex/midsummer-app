@@ -124,7 +124,7 @@ const DrunkScoreboard = () => {
               name="person"
               className="w-full p-2 text-lg text-yellow-500 bg-blue-900 rounded-md"
             >
-              <option value=""></option>
+              <option value="">Select a person...</option>
               {persons.map((person) => (
                 <option
                   className="text-yellow-500 capitalize bg-blue-900"

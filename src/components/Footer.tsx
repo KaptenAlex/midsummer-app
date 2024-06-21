@@ -5,7 +5,7 @@ const Footer = () => {
   const location = useLocation();
 
   return (
-    <footer className="absolute bottom-0 grid items-center justify-between w-full grid-cols-4">
+    <footer className="fixed bottom-0 grid items-center justify-between w-full grid-cols-4">
       <FooterLink text="🏡" isActive={location.pathname === '/'} to="/" />
       <FooterLink
         text="🥃🎶"
